@@ -48,7 +48,7 @@ $(function() {
       }
       if (/^http(?:s?):\/\/chrome\.google\.com\/webstore.*/.test(tabs[0].url)) {
         // Technical reason: Chrome prevents content scripts from running in the app gallery.
-        return showError('Try Hashpass on another domain.');
+        return showError('Try Aramnis on another domain.');
       }
       $('#domain').val(domain);
 
@@ -58,7 +58,7 @@ $(function() {
       }, function() {
         // Check if a password field is selected.
         chrome.tabs.sendMessage(tabs[0].id, {
-            type: 'hashpassCheckIfPasswordField'
+            type: 'aramnisCheckIfPasswordField'
           }, function(response) {
             // Different user interfaces depending on whether a password field is in focus.
             var passwordMode = (response.type === 'password');
@@ -106,7 +106,7 @@ $(function() {
                 if (e.which === 13) {
                   // Try to fill the selected password field with the hash.
                   chrome.tabs.sendMessage(tabs[0].id, {
-                      type: 'hashpassFillPasswordField',
+                      type: 'aramnisFillPasswordField',
                       hash: update()
                     }, function(response) {
                       // If successful, close the popup.

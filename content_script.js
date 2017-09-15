@@ -14,8 +14,8 @@
 })();
 
 // Make sure the content script is only run once on the page.
-if (!window.hashpassLoaded) {
-  window.hashpassLoaded = true;
+if (!window.aramnisLoaded) {
+  window.aramnisLoaded = true;
 
   // Stores a document inside of which activeElement is located.
   var activeDocument = document;
@@ -50,7 +50,7 @@ if (!window.hashpassLoaded) {
       };
 
       // Check if a password field is selected.
-      if (request.type === 'hashpassCheckIfPasswordField') {
+      if (request.type === 'aramnisCheckIfPasswordField') {
         activeDocument = getActiveDocument();
         if (isPasswordInput(activeDocument.activeElement)) {
           sendResponse({ type: 'password' });
@@ -61,7 +61,7 @@ if (!window.hashpassLoaded) {
       }
 
       // Fill in the selected password field.
-      if (request.type === 'hashpassFillPasswordField') {
+      if (request.type === 'aramnisFillPasswordField') {
         if (isPasswordInput(activeDocument.activeElement)) {
           activeDocument.activeElement.value = request.hash;
           sendResponse({ type: 'close' });
