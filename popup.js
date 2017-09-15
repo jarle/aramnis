@@ -1,21 +1,6 @@
-'use strict';
-
-// Make sure we are in strict mode.
-(function() {
-  var strictMode = false;
-  try {
-    NaN = NaN;
-  } catch (err) {
-    strictMode = true;
-  }
-  if (!strictMode) {
-    throw 'Unable to activate strict mode.';
-  }
-})();
-
 // The hashing difficulty.
 // 2 ^ difficulty rounds of SHA-256 will be computed.
-var difficulty = 16;
+const difficulty = 16;
 
 $(function() {
   // Get the current tab.
@@ -38,24 +23,23 @@ $(function() {
       }
 
       // Get the domain.
-      var domain = null;
-      var matches = tabs[0].url.match(/^http(?:s?):\/\/([^/]*)/);
+      var domain = "";
+      var matches = tabs[0].url.match(/^http(?:s?):\/\/(?:www\.)?([^/]*)/);
       if (matches) {
         domain = matches[1].toLowerCase();
       } else {
         // Example cause: files served over the file:// protocol.
         return showError('Unable to determine the domain.');
       }
-      if (/^http(?:s?):\/\/chrome\.google\.com\/webstore.*/.test(tabs[0].url)) {
-        // Technical reason: Chrome prevents content scripts from running in the app gallery.
-        return showError('Try Aramnis on another domain.');
+      else {
+        $('#domain').focus(); // enter domain manually
       }
       $('#domain').val(domain);
 
       // Run the content script to register the message handler.
       chrome.tabs.executeScript(tabs[0].id, {
         file: 'content_script.js'
-      }, function() {
+      }, () => {
         // Check if a password field is selected.
         chrome.tabs.sendMessage(tabs[0].id, {
             type: 'aramnisCheckIfPasswordField'
@@ -69,22 +53,16 @@ $(function() {
               $('#message').html('<strong>TIP:</strong> Select a password field first.');
             }
 
-            // Called whenever the key changes.
             var update = function() {
-              // Compute the first 16 base64 characters of iterated-SHA-256(domain + '/' + key, 2 ^ difficulty).
-              var key = $('#key').val();
+              // Compute the first 16 base64 characters of SHA-256
+              const key = $('#key').val();
               domain = $('#domain').val().replace(/^\s+|\s+$/g, '').toLowerCase();
 
               var rounds = Math.pow(2, difficulty);
-              var bits = domain + '/' + key;
-              for (var i = 0; i < rounds; i += 1) {
-                bits = sjcl.hash.sha256.hash(bits);
-              }
+              const combination = domain + '/' + key;
 
-              var hash = sjcl.codec.base64.fromBits(bits).slice(0, 16);
-              if (!passwordMode) {
-                $('#hash').val(hash);
-              }
+              bits = sjcl.hash.sha256.hash(combination);
+              const hash = sjcl.codec.base64.fromBits(bits).slice(0, 16);
               return hash;
             };
 
@@ -95,9 +73,12 @@ $(function() {
                 clearInterval(timeout);
               }
               timeout = setTimeout((function() {
-                update();
+                if(!passwordMode){
+                  const hash = update();
+                  $('#hash').val(hash);
+                }
                 timeout = null;
-              }), 100);
+              }), 200);
             };
 
             if (passwordMode) {
