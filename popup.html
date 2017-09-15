@@ -28,12 +28,12 @@
         margin: 16px;
         outline-style: none;
         line-height: 20px;
-        font-size: 1.2em;
+        font-size: 1em;
         color: inherit;
       }
 
       input:focus {
-        border-color: #f872ae;
+        border-color: #5B79AD;
       }
 
       input, p {
@@ -60,17 +60,15 @@
         color: #c00;
       }
     </style>
-    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="sjcl.js"></script>
     <script type="text/javascript" src="popup.js"></script>
   </head>
+
   <body>
-    <p class="small-bottom-margin">Domain:</p>
-    <input id="domain" class="small-top-margin" type="text" />
-    <p class="small-bottom-margin">Key:</p>
-    <input id="key" class="small-top-margin" type="password" />
-    <p class="small-bottom-margin">Hash:</p>
+    <input id="domain" class="small-top-margin" type="text" placeholder="Domain"/>
+    <input id="key" class="small-top-margin" type="password" placeholder="Key"/>
+    <p class="small-bottom-margin">Generated password:</p>
     <input id="hash" class="small-top-margin" type="text" readonly="true" />
-    <p id="message">&nbsp;</p>
   </body>
 </html>
