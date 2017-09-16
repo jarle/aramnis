@@ -2,22 +2,17 @@
   "manifest_version": 2,
 
   "name": "Aramnis",
-  "description": "A simple, stateless password manager.",
+  "description": "Safe and unique passwords without the hassle",
   "version": "0.0.1",
   "permissions": [
     "activeTab"
   ],
   "browser_action": {
-    "default_icon": {
-      "19": "icon.png",
-      "38": "icon.png",
-      "128": "icon.png"
-    },
-    "default_popup": "popup.html"
+    "default_icon": "res/icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Aramnis Password Manager"
   },
   "icons": {
-    "19": "icon.png",
-    "38": "icon.png",
-    "128": "icon.png"
+    "128": "res/icon.png"
   }
 }
